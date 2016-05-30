@@ -3,6 +3,7 @@ from sklearn import datasets
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import pandas as pd
 
 # Fettermania libraries 
 import plot_decision_regions
@@ -10,8 +11,9 @@ import plot_decision_regions
 # === SECTION: get data ===
 
 # TODO start here 
-#  df = pd.read_csv("/Users/fettermania/Desktop/Projects/Project_amperity/uci-test/resources/uci/block_1.csv")
+#df = pd.read_csv("/Users/fettermania/Desktop/Projects/Project_amperity/uci-test/resources/uci/block_1.csv")
 iris = datasets.load_iris()
+# Fettermania: why is [2,3] better than all the features?
 X = iris.data[:, [2, 3]]
 y = iris.target
 # Fettermania: messing around, adding more classes
