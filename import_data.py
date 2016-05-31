@@ -5,7 +5,6 @@ import os
 import re
 import numpy as np
 
-# Fettermania libraries
 
 def df_from_known_csvs():
   dfs = []
@@ -24,18 +23,13 @@ def target_column_from_df(df):
   return 'is_match'
 
 
-# TODO: Fettermania: Drop other data column
 def dataframe_clean_columns_in_place(df):
   for col_name in df.columns:
-#    print ("CHECKING COLUMN " + col_name)
     if (df[col_name].dtype == np.dtype('O')):
       null_col_name = col_name + "_is_null"
-      # Fettermania: Trying to "add feature" to missing column???
       df[null_col_name] = df[col_name].apply(lambda x : 1 if x == "?" else 0)
-      #np.zeros(df[col_name].shape[0])
-      #df[null_col_name][df[col_name] == "?"] = 1.0
       df[col_name] = df[col_name].apply(lambda x: 0.0 if x == "?" else x)
       df[col_name] = df[col_name].astype(float)
-  # TODO: Call this "target column" in config or something
-  df['is_match'] = df['is_match'].astype(int)
+  target_column = target_column_from_df(df)
+  df[target_column] = df[target_column].astype(int)
 
