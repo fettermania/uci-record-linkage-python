@@ -2,15 +2,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import pandas as pd
+
+
+# Import data
+
 import import_data
-
-
 print('Importing data from block_*.csv...')
 df = import_data.df_from_known_csvs()
 import_data.dataframe_clean_columns_in_place(df)
 
 X = df[import_data.feature_columns_from_df(df)]
 y = df[import_data.target_column_from_df(df)]
+
+# Create test and train sets
+from sklearn.cross_validation import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.9, random_state=0)
+
+# Metrics
+import sklearn.metrics
+np.set_printoptions(precision=6) # for confusion matrix
 
 def print_scores(y_test, y_pred):
   print('Accuracy: %.6f' % sklearn.metrics.accuracy_score(y_test, y_pred))
@@ -21,15 +31,6 @@ def print_scores(y_test, y_pred):
   cm = sklearn.metrics.confusion_matrix(y_test, y_pred)
   print('Confusion matrix')
   print(cm)
-
-
-from sklearn.cross_validation import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.9, random_state=0)
-
-import sklearn.metrics
-from sklearn.linear_model import LogisticRegression
-np.set_printoptions(precision=6) # for confusion matrix
-
 
 
 # MODEL: Dummy
@@ -52,6 +53,7 @@ print_scores(y_test, y_pred)
 
 
 # MODEL: Logistic Regression
+from sklearn.linear_model import LogisticRegression
 for exp in range(-5, 6):
   lr = LogisticRegression(C=10**exp, random_state=0)
   lr.fit(X_train, y_train)
